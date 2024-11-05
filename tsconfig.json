@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./app",
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "paths": {
+      "@application/*": ["app/application/*"],
+      "@domain/*": ["app/domain/*"],
+      "@infrastructure/*": ["app/infrastructure/*"],
+      "@interface/*": ["app/interface/*"],
+      "@Utils/*": ["app/Utils/*"],
+      "@config": ["config"],
+      "@routes/*": ["app/routes/*"]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./@types"
+    ]
+  },
+  "include": [
+    "./app/**/*.ts",
+    "./tests/**/*.ts",
+    "./config/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

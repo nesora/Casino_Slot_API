@@ -1,0 +1,255 @@
+openapi: 3.0.0
+info:
+  title: My Custom Casino API
+  description: This API handles operations related to the casino, including wallet management and slot games.
+  version: 1.0.0
+paths:
+  /play:
+    post:
+      tags:
+      - Slot Operations
+      summary: Play slot game
+      description: Simulate playing a slot machine.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bet:
+                  type: number
+                  description: Bet amount for the slot game
+              required:
+                - bet
+      responses:
+        200:
+          description: Successfully played slot game
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  matrix:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: string
+                  winnings:
+                    type: number
+                    description: Winnings from the game
+        400:
+          description: Mandatory body parameters not provided, of incorrect type or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                  message:
+                    type: string
+                    description: Field is not a number.
+        403:
+          description: User dont have insufficient balance !
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                  message:
+                    type: string
+                    description: User dont have insufficient balance !
+                  
+  /sim:
+    post:
+      tags:
+      - Slot Operations
+      summary: Simulate slot game spins
+      description: Run multiple spins of the slot game.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: Number of spins
+                bet:
+                  type: integer
+                  description: Bet amount per spin
+              required:
+                - count
+                - bet
+      responses:
+        200:
+          description: Simulation results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalWinnings:
+                    type: number
+                    description: Total winnings from simulation
+                  netResult:
+                    type: number
+                    description: Net result from simulation
+        400:
+          description: Mandatory body parameters not provided, of incorrect type or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                  message:
+                    type: string
+                    description: Field is not a number.
+        403:
+          description: User dont have insufficient balance !
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                  message:
+                    type: string
+                    description: User dont have insufficient balance !
+        500:
+          description: Internal server error
+
+  /getRTP:
+    get:
+      tags:
+      - Slot Operations
+      summary: Get RTP (Return to Player) of the slot game
+      description: Retrieve the RTP value, representing the payout percentage of the slot game.
+      responses:
+        200:
+          description: RTP retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rtp:
+                    type: number
+                    description: RTP percentage of the slot game
+        404:
+          description: RTP not found
+        500:
+          description: Internal server error
+
+  /wallet/deposit:
+      post:
+        tags:
+        - Wallet Operations
+        summary: Deposit into wallet
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                required:
+                  - amount
+        responses:
+          200:
+            description: Successfully deposited amount
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+          400:
+            description: Mandatory body parameters not provided, of incorrect type or invalid.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                    message:
+                      type: string
+                      description: Field is not a number.
+          500:
+            description: Internal server error
+          
+  /wallet/withdraw:
+    post:
+      tags:
+      - Wallet Operations
+      summary: Withdraw from wallet
+      description: Remove funds from the wallet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  description: Amount to withdraw
+              required:
+                - amount
+      responses:
+        200:
+          description: Successfully withdrawn funds
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: number
+                    description: Updated wallet balance
+        400:
+          description: Mandatory body parameters not provided, of incorrect type or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                  message:
+                    type: string
+                    description: Field is not a number.
+        500:
+          description: Internal server error
+
+  /wallet/balance:
+    get:
+      tags:
+      - Wallet Operations
+      summary: Get wallet balance
+      description: Retrieve the current balance of the wallet.
+      responses:
+        200:
+          description: Current wallet balance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: number
+                    description: Current wallet balance
+        500:
+          description: Internal server error
